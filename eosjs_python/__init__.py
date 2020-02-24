@@ -21,10 +21,26 @@ class Eos:
         response = muterun_js(cls.current_dir + '/js/GenerateKeys.js')
         if response.exitcode == 0:
             true_string = response.stdout.decode('utf8')
+            return true_string
             data = json.loads(true_string)
             return data
         else:
             raise GenerateKeysException(response.stderr)
+
+    @classmethod
+    def sign_data(cls, raw_data, wif):
+        arguments = "'%s' '%s'" % (
+            raw_data,
+            wif
+        )
+        response = muterun_js(cls.current_dir + '/js/SignData.js', arguments=arguments)
+        if response.exitcode == 0:
+            signature = response.stdout.decode('utf8')
+            return signature
+        else:
+            return None
+            #raise GenerateKeysException(response.stderr)
+
 
     @classmethod
     def encrypt_chain_message(cls, privKeySender, pubKeyRecipient, message):
