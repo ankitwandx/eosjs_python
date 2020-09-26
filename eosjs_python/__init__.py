@@ -43,6 +43,22 @@ class Eos:
 
 
     @classmethod
+    def verify(cls, signature, raw_data, public_key):
+        arguments = "'%s' '%s' '%s'" % (
+            signature,
+            raw_data,
+            public_key
+        )
+        response = muterun_js(cls.current_dir + '/js/VerifySignature.js', arguments=arguments)
+        if response.exitcode == 0:
+            verified = response.stdout.decode('utf8')
+            return verified
+            # return signature.replace("\n", "")
+        else:
+            return None
+            #raise GenerateKeysException(response.stderr)
+
+    @classmethod
     def encrypt_chain_message(cls, privKeySender, pubKeyRecipient, message):
         arguments = "'%s' '%s' '%s'" % (
             privKeySender,
