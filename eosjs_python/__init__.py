@@ -52,8 +52,8 @@ class Eos:
         response = muterun_js(cls.current_dir + '/js/VerifySignature.js', arguments=arguments)
         if response.exitcode == 0:
             verified = response.stdout.decode('utf8')
-            return verified
-            # return signature.replace("\n", "")
+            # return verified
+            return verified.replace("\n", "")
         else:
             return None
             #raise GenerateKeysException(response.stderr)
